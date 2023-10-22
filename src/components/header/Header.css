@@ -1,0 +1,196 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100px;
+    z-index: 9;
+    width: 100%;
+    transition: .3s;
+}
+
+.header-container {
+    width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.header.fixed-active {
+    box-shadow: 0 0 30px -25px #1e6897;
+    height: 70px;
+    background: #00111c;
+}
+
+.header .logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 85px;
+}
+
+.header .social {
+    display: flex;
+    align-items: center;
+    border: 1px solid #21376F;
+    border-radius: 50px;
+}
+
+.header .social .left {
+    display: flex;
+    width: 80px;
+    height: 40px;
+    border: 1px solid #21376F;
+    border-left: 0;
+    align-items: center;
+    justify-content: space-around;
+    position: relative;
+    border-radius: 55px;
+    cursor: pointer;
+    background: #00111d;
+}
+
+.header .social .left.active .circle {
+    transform: rotate(360deg);
+    left: 44px;
+}
+
+.header .social .left.pointer-none {
+    pointer-events: none;
+}
+
+.header .social .left .circle {
+    position: absolute;
+    left: 5px;
+    width: 33px;
+    height: 33px;
+    background: #2C53B5;
+    border-radius: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    transition: 0.7s;
+    transition-timing-function: cubic-bezier(0, 0.65, 0.1, 1.07);
+}
+
+.header .social .left:hover .circle {
+    width: 44px;
+}
+
+.header .social .left.active:hover .circle {left: 33px;}
+
+.header .social .left > svg {
+    transition: 0.4s;
+    /* transition-delay: 0.1s; */
+}
+
+.header .social .left > svg:nth-child(1) {
+    opacity: 0;
+    transform: scale(.6);
+}
+
+.header .social .left.active > svg:nth-child(1) {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.header .social .left > svg:nth-child(2) {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.header .social .left.active > svg:nth-child(2) {
+    opacity: 0;
+    transform: scale(.6);
+}
+
+.header .social .left .circle svg {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.header .social .left .circle svg.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.header .social .left.active .circle svg:nth-child(2) {
+    opacity: 1;
+    visibility: visible;
+}
+
+.header .social .left.active .circle svg:nth-child(1) {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.header .social .right {
+    width: 170px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.header .social .right:before {
+    content: "";
+    position: absolute;
+    left: -20px;
+    right: 0;
+    bottom: 0;
+    height: 0;
+    background: linear-gradient(0deg, #15519f96, #ffffff00);
+    z-index: -1;
+    border-radius: 100px;
+    border-bottom-left-radius: 0;
+    transition: .3s;
+    opacity: 0;
+}
+
+.header .social .right:hover:before {
+    height: 100%;
+    opacity: .4;
+}
+
+.header .social a {
+    padding: 11px 25px;
+    transition: 0.2s;
+    display: block;
+    color: #FFF;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.3px;
+    text-decoration: none;
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    text-align: center;
+    transition: .4s;
+}
+
+.header .social a:nth-child(1) {
+    opacity: 1;
+    visibility: visible;
+     transform: translateY(0px) scale(1);
+}
+
+.header .social a:nth-child(2) {
+    transform: translateY(10px) scale(.8);
+}
+
+.header .social .right.active a:nth-child(1) {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(.8);
+}
+
+.header .social .right.active a:nth-child(2) {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0px) scale(1);
+}

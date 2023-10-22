@@ -1,0 +1,45 @@
+.entrance {
+    width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    padding: 200px 0 100px;
+}
+
+.entrance:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -75%);
+    width: 1200px;
+    height: 1200px;
+    background: radial-gradient(#031C2C 0%, #011420 50%, #00111C 70%);
+    border-radius: 100%;
+    /* filter: blur(20px); */
+    z-index: -3;
+    opacity: 1;
+}
+
+.entrance h4 {
+    font-size: 80px;
+    font-weight: 600;
+    color: #2C53B5;
+    line-height: 1.1;
+}
+
+.entrance h4 span {
+    color: #B8D4E7;
+}
+
+.entrance p {
+    color: #4569AF;
+    font-size: 25px;
+    margin-left: auto;
+    width: 320px;
+    margin-top: 40px;
+    font-weight: 400;
+}
+
+.entrance p b {
+    font-weight: 600;
+}
