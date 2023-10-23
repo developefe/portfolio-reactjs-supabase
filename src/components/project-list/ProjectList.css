@@ -10,6 +10,7 @@
     flex-wrap: wrap;
     min-height: 445px;
     margin: 0 -30px;
+    transition: .4s;
 }
 
 .project-list > .top {

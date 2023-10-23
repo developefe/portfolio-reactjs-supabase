@@ -4,6 +4,7 @@ import ProjectItem from '../project-item/ProjectItem'
 import supabase from '../../supabaseClient';
 import './ProjectList.css';
 import Isotope from "isotope-layout";
+import $ from 'jquery';
 
 export default function ProjectList() {
 
@@ -57,7 +58,7 @@ export default function ProjectList() {
             layoutMode: 'fitRows',
         });
 
-        return () => isotope.current.destroy();    
+        // return () => isotope.current.destroy();
     }, [projects])
 
     useEffect(() => {
@@ -66,27 +67,65 @@ export default function ProjectList() {
         : isotope.current.arrange({filter: `.${filterKey}`});
     }, [filterKey])
 
+    // // Infinite scroll
+
+    const [scrollOver, setScrollOver] = useState(false);
+    const [oldPage, setOldPage] = useState(1);
+    const [page, setPage] = useState(3);
+
+    const fetchProjects = async (from, to) => {
+        const {data, error} = await supabase
+            .from('project-list')
+            .select()
+            .range(from, to);
+
+        if (error) {
+            setProjects(null)
+            setProjectsCatchErr('Projeler yüklenirken bir hata oluştu, lütfen daha sonra tekrar deneyiniz (FETCHERR-01)')
+            console.log(error);
+        }
+        if (data) {
+            setProjects(data);
+            console.log(data);
+            setProjectsCatchErr(null);
+        }
+    }
 
     useEffect(() => {
+        const handleScroll = () => {
+            if (projectsRef?.current[0].classList.value.includes('active')) {
+                if (((window.scrollY + window.innerHeight) > (document.documentElement.offsetHeight  - 1)) && !scrollOver) {
+                    console.log('yeni itemler eklendi');
         
-        const fetchProjects = async () => {
-            const {data, error} = await supabase
-                .from('project-list')
-                .select();
-
-            if (error) {
-                setProjects(null)
-                setProjectsCatchErr('Projeler yüklenirken bir hata oluştu, lütfen daha sonra tekrar deneyiniz (FETCHERR-01)')
-                console.log(error);
+                        setOldPage(page);
+                        setPage(page+2);
+        
+                        console.log(oldPage,page);
+        
+                        fetchProjects(0,page).then(function () {
+        
+                            console.log(isotope.current);
+                            console.log('yeni prjeler:', projects);
+                        });
+                        setScrollOver(true);
+        
+                } else if ((window.scrollY + window.innerHeight) < (document.documentElement.offsetHeight  - 1)) {
+                    setScrollOver(false);
+                }
+                };
             }
-            if (data) {
-                setProjects(data);
-                console.log(data);
-                setProjectsCatchErr(null);
-            }
-        }
 
-        fetchProjects();
+        window.addEventListener('scroll', handleScroll);
+    
+        return () => {
+        window.removeEventListener('scroll', handleScroll);
+        };
+    }, [scrollOver]);
+    
+
+    useEffect(() => {
+    
+        fetchProjects(0,1);
 
         const fetchProjectType = async () => {
             const {data, error} = await supabase
@@ -108,6 +147,7 @@ export default function ProjectList() {
         fetchProjectType();
     }, []);
 
+    // Open Search
     const handleSearch = () => {
         filterContainer.current.classList.add('search');
         console.log('memo filter set edildi:'+filterKey);
@@ -118,6 +158,7 @@ export default function ProjectList() {
         }, 300);
     }
 
+    // Open Filter Buttons
     const handleFilter = () => {
         filterContainer.current.classList.remove('search');
         console.log('set edilecek filterKey:'+ memoFilter);
@@ -128,6 +169,7 @@ export default function ProjectList() {
         }, 300);
     }
     
+    // Custom search
     var qsVals = [];
 
     const handleSearchInput = (val) => {
