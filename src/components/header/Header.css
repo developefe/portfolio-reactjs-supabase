@@ -194,3 +194,22 @@
     visibility: visible;
     transform: translateX(0px) scale(1);
 }
+
+@media only screen and (max-width: 1440px){
+    .header-container {
+        width: 1260px;
+    }
+}
+
+@media only screen and (max-width: 1200px){
+    .header-container {
+        width: 90%;
+        padding: 0 30px;
+    }
+
+    .header .social {transform: scale(.8) translateX(30px);}
+
+    .entrance h4 {
+        padding-left: 30px;
+    }
+}

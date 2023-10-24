@@ -1,0 +1,248 @@
+.footer {
+    max-width: 1400px;
+    margin: 0 auto;
+    border-top: 1px solid #07283D;
+    padding: 85px 0 75px;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 73%);
+    width: 110%;
+    height: 1600px;
+    background: radial-gradient(#031C2C 0%, #011420 50%, #00111C 70%);
+    border-radius: 100%;
+    /* filter: blur(20px); */
+    z-index: -3;
+    opacity: 1;
+}
+
+.footer h4 {
+    color: #B8D4E7;
+    font-size: 2.4vw;
+    font-weight: 600;
+    line-height: normal;
+    letter-spacing: -1.6px;
+    text-align: center;
+    max-width: 70%;
+    margin: 0 auto 55px;
+}
+
+.footer .social {
+    display: flex;
+    align-items: center;
+    border: 1px solid #21376F;
+    border-radius: 50px;
+    max-width: 245px;
+    transform: scale(1.5);
+    margin: 0 auto;
+}
+
+.footer .social .left {
+    display: flex;
+    width: 80px;
+    height: 40px;
+    border: 1px solid #21376F;
+    border-left: 0;
+    align-items: center;
+    justify-content: space-around;
+    position: relative;
+    border-radius: 55px;
+    cursor: pointer;
+    background: #00111d;
+}
+
+.footer .social .left.active .circle {
+    transform: rotate(360deg);
+    left: 41px;
+}
+
+.footer .social .left.pointer-none {
+    pointer-events: none;
+}
+
+.footer .social .left .circle {
+    position: absolute;
+    left: 3px;
+    width: 34px;
+    height: 34px;
+    background: #2C53B5;
+    border-radius: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    transition: 0.7s;
+    transition-timing-function: cubic-bezier(0, 0.65, 0.1, 1.07);
+}
+
+.footer .social .left:hover .circle {
+    width: 44px;
+}
+
+.footer .social .left.active:hover .circle {
+    left: 31px;
+}
+
+.footer .social .left > svg {
+    transition: 0.4s;
+    /* transition-delay: 0.1s; */
+}
+
+.footer .social .left > svg:nth-child(1) {
+    opacity: 0;
+    transform: scale(.6);
+}
+
+.footer .social .left.active > svg:nth-child(1) {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.footer .social .left > svg:nth-child(2) {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.footer .social .left.active > svg:nth-child(2) {
+    opacity: 0;
+    transform: scale(.6);
+}
+
+.footer .social .left .circle svg {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: .2s;
+    will-change: transform;
+}
+
+.footer .social .left .circle svg.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.footer .social .left.active .circle svg:nth-child(2) {
+    opacity: 1;
+    visibility: visible;
+}
+
+.footer .social .left.active .circle svg:nth-child(1) {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.footer .social .right {
+    width: 170px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.footer .social .right:before {
+    content: "";
+    position: absolute;
+    left: -20px;
+    right: 0;
+    bottom: 0;
+    height: 0;
+    background: linear-gradient(0deg, #15519f96, #ffffff00);
+    z-index: -1;
+    border-radius: 100px;
+    border-bottom-left-radius: 0;
+    transition: .3s;
+    opacity: 0;
+}
+
+.footer .social .right:hover:before {
+    height: 100%;
+    opacity: .4;
+}
+
+.footer .social a {
+    padding: 11px 25px;
+    transition: 0.2s;
+    display: block;
+    color: #FFF;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.3px;
+    text-decoration: none;
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    text-align: center;
+    transition: .4s;
+}
+
+.footer .social a:nth-child(1) {
+    opacity: 1;
+    visibility: visible;
+     transform: translateY(0px) scale(1);
+}
+
+.footer .social a:nth-child(2) {
+    transform: translateY(10px) scale(.8);
+}
+
+.footer .social .right.active a:nth-child(1) {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px) scale(.8);
+}
+
+.footer .social .right.active a:nth-child(2) {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0px) scale(1);
+}
+
+@media only screen and (max-width: 1440px){
+    .footer {
+        max-width: 1260px;
+    }
+}
+
+@media only screen and (max-width: 1200px){
+    .footer h4 {
+        font-size: 23px;
+        margin-bottom: 35px;
+    }
+    
+    .footer .social {
+        transform: scale(1.2);
+    }
+    
+    .footer {
+        padding: 55px 0;
+        width: 90%;
+    }
+}
+
+@media only screen and (max-width: 767px){
+    .footer h4 {
+        font-size: 18px;
+    }
+    
+    .footer .social .right {}
+    
+    .footer .social {
+        transform: scale(1);
+    }
+    
+    .footer {
+        padding: 45px 0;
+    }
+}

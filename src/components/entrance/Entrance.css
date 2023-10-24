@@ -43,3 +43,43 @@
 .entrance p b {
     font-weight: 600;
 }
+
+@media only screen and (max-width: 1440px){
+    .entrance {
+        width: 1260px;
+    }
+}
+
+@media only screen and (max-width: 1200px){
+    .entrance {
+        padding: 150px 0px 100px;
+        max-width: 100%;
+        width: 100%;
+        overflow: hidden;
+    }
+    
+    .entrance h4 {
+        font-size: 40px;
+    }
+    
+    .entrance p {
+        font-size: 18px;
+        width: 250px;
+    }
+}
+
+@media only screen and (max-width: 767px){
+    .entrance h4 {
+        font-size: 29px;
+    }
+    
+    .entrance p {
+        font-size: 14px;
+        width: 160px;
+        padding-right: 30px;
+    }
+    
+    .entrance {
+        padding: 150px 0px 80px;
+    }
+}

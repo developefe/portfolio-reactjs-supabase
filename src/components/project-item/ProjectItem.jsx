@@ -1,11 +1,23 @@
+import { useEffect, useRef } from 'react';
 import ProjectImage from '../../assets/default_project.jpg';
 import './ProjectItem.css'
 
 
 export default function ProjectItem({project}) {
+
+
+    const projectItem = useRef([]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            projectItem.current.style.scale = 1;
+        });
+    }, [])
+    
+
     return(
         <div className={`item-container ${project.projectType}`}>
-            <div className="project-item">
+            <div className="project-item" style={{scale: 0}} ref={projectItem}>
                 {project.projectStatus == 'Tamamlandı' ? <span className="status">Tamamlandı</span> : <span className="status warning">Devam ediyor</span>}
                 <div className="top">
                     <p className="name">

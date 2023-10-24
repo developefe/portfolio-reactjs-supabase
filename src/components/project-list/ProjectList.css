@@ -1,5 +1,5 @@
 .project-list {
-    padding-bottom: 250px;
+    padding-bottom: 150px;
     width: 1400px;
     margin: 0 auto;
 }
@@ -164,4 +164,51 @@
 
 .project-list > .top .filter-active.search .search-button span {
     transform: translateY(0px);
+}
+
+@media only screen and (max-width: 1440px){
+    .project-list {
+        width: 1260px;
+    }
+}
+
+@media only screen and (max-width: 1366px){
+    .project-list {
+        width: 1190px;
+    }
+}
+
+@media only screen and (max-width: 1200px){
+    .project-list {
+        width: 90%;
+        padding: 0 0px 100px;
+    }
+    .project-list > .top .filter-active .filter-links .link-item {
+        font-size: 14px;
+        padding: 0 11px 15px;
+    }
+    
+    .project-list .list {
+        margin: 0;
+    }
+}
+
+@media only screen and (max-width: 767px){
+    .project-list > .top .filter-active .filter-links .link-item {
+        padding: 0 10px 5px;
+        font-size: 12px;
+    }
+    
+    .project-list > .top .filter-active .search-input {
+        gap: 15px;
+    }
+    
+    .project-list > .top .filter-active .search-input input {
+        font-size: 14px;
+        width: 210px;
+    }
+    
+    .project-list > .top .filter-active .search-input input::placeholder {
+        font-size: 12px;
+    }
 }

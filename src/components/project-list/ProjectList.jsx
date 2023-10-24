@@ -21,7 +21,6 @@ export default function ProjectList() {
     // Search and animation
     const filterContainer = useRef();
     const searchInput = useRef();
-    const [memoFilter, setMemoFilter] = useState(null);
 
     // Isotope
     const isotope = useRef()
@@ -67,11 +66,25 @@ export default function ProjectList() {
         : isotope.current.arrange({filter: `.${filterKey}`});
     }, [filterKey])
 
-    // // Infinite scroll
-
+    // Infinite scroll
     const [scrollOver, setScrollOver] = useState(false);
-    const [oldPage, setOldPage] = useState(1);
-    const [page, setPage] = useState(3);
+    const [page, setPage] = useState(2);
+    const [projectCount, setProjectCount] = useState(null)
+
+    const fetchProjectCount = async () => {
+        const {data, error} = await supabase
+            .from('project-list')
+            .select('id')
+
+        if (error) {
+            setProjectCount('projeler çekilemedi')
+            console.log(error);
+        }
+        if (data) {
+            setProjectCount(data);
+            console.log('proje id: ', data);
+        }
+    }
 
     const fetchProjects = async (from, to) => {
         const {data, error} = await supabase
@@ -93,23 +106,15 @@ export default function ProjectList() {
 
     useEffect(() => {
         const handleScroll = () => {
-            if (projectsRef?.current[0].classList.value.includes('active')) {
-                if (((window.scrollY + window.innerHeight) > (document.documentElement.offsetHeight  - 1)) && !scrollOver) {
-                    console.log('yeni itemler eklendi');
-        
-                        setOldPage(page);
-                        setPage(page+2);
-        
-                        console.log(oldPage,page);
-        
-                        fetchProjects(0,page).then(function () {
-        
-                            console.log(isotope.current);
-                            console.log('yeni prjeler:', projects);
-                        });
+            if (projectsRef?.current[0]?.classList.value.includes('active') && !filterContainer.current.classList.value.includes('search')) {
+                if (((window.scrollY + window.innerHeight) > (document.documentElement.offsetHeight  - 150)) && !scrollOver) {
+                    if ((projectCount.length - page) > -1) {
+                        console.log('handle scroll çalıştı');
+                        setPage(page+2);            
+                        fetchProjects(0,page)
                         setScrollOver(true);
-        
-                } else if ((window.scrollY + window.innerHeight) < (document.documentElement.offsetHeight  - 1)) {
+                    }
+                } else if ((window.scrollY + window.innerHeight) < (document.documentElement.offsetHeight  - 150)) {
                     setScrollOver(false);
                 }
                 };
@@ -120,11 +125,12 @@ export default function ProjectList() {
         return () => {
         window.removeEventListener('scroll', handleScroll);
         };
-    }, [scrollOver]);
+    }, [scrollOver, projectCount]);
     
 
     useEffect(() => {
-    
+
+        fetchProjectCount();
         fetchProjects(0,1);
 
         const fetchProjectType = async () => {
@@ -150,19 +156,33 @@ export default function ProjectList() {
     // Open Search
     const handleSearch = () => {
         filterContainer.current.classList.add('search');
-        console.log('memo filter set edildi:'+filterKey);
-        setMemoFilter(filterKey);
 
         setTimeout(() => {
             searchInput.current.focus();
         }, 300);
     }
 
+    useEffect(() => {
+        
+        const checkSearchIsActive = (e) => {
+
+            if (filterContainer.current.classList.value.includes('search') && e && e.key === 'Escape') {
+                handleFilter();
+            }
+
+        }
+
+        window.addEventListener('keydown', (e) => checkSearchIsActive(e))
+
+        return () => {
+        window.removeEventListener('keydown', (e) => checkSearchIsActive(e))
+        }
+    }, [])
+    
+
     // Open Filter Buttons
     const handleFilter = () => {
         filterContainer.current.classList.remove('search');
-        console.log('set edilecek filterKey:'+ memoFilter);
-        setFilterKey(memoFilter);
         
         setTimeout(() => {
             searchInput.current.value = '';
