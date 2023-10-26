@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import './Footer.css';
 
-export default function Footer(){
+export default function Footer({...props}){
 
     const leftSide = useRef();
     const rightSide = useRef();
@@ -17,7 +17,7 @@ export default function Footer(){
 
     return(
         <div className="footer">
-            <h4>Arayüz ve Dijital Ürünler tasarlıyor geliştiriyoruz. Hemen bize ulaşın!</h4>
+            <h4>{props.footerSlogan}</h4>
             <div className="social">
                 <div className="left" ref={leftSide} onClick={buttonClick}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 15 15" > <path stroke="#B8D4E7" strokeLinecap="round" strokeWidth="1.15" d="M2.291 4.435l3.911 2.704a2.293 2.293 0 002.596 0l3.911-2.704M1.332 10.099a8.293 8.293 0 010-4.127c.455-1.773 1.909-3.145 3.753-3.54l.307-.066a10.064 10.064 0 014.216 0l.307.066c1.844.395 3.298 1.767 3.753 3.54a8.293 8.293 0 010 4.127c-.455 1.774-1.909 3.145-3.753 3.54l-.307.066a10.062 10.062 0 01-4.216 0l-.307-.066c-1.844-.395-3.298-1.766-3.753-3.54z" ></path> </svg>
@@ -28,8 +28,8 @@ export default function Footer(){
                     </div>
                 </div>
                 <div className="right" ref={rightSide}>
-                    <a href="#!">hello@uicrea.com</a>
-                    <a href="#!">0544 334 0373</a>
+                    <a href={'mailto:'+props.mail}>{props.mail}</a>
+                    <a href={'tel:'+props.tel}>{props.tel}</a>
                 </div>
             </div>
         </div>

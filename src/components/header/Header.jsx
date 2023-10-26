@@ -1,7 +1,7 @@
 import './Header.css';
 import { useEffect, useRef, useState } from 'react';
 
-export default function Header() {
+export default function Header({...props}) {
 
     const leftSide = useRef();
     const rightSide = useRef();
@@ -49,8 +49,8 @@ export default function Header() {
                         </div>
                     </div>
                     <div className="right" ref={rightSide}>
-                        <a href="#!">hello@uicrea.com</a>
-                        <a href="#!">0544 334 0373</a>
+                        <a href={'mailto:'+props.mail}>{props.mail}</a>
+                        <a href={'tel:'+props.tel}>{props.tel}</a>
                     </div>
                 </div>
             </div>

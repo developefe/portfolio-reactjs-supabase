@@ -15,6 +15,7 @@ export default function ProjectList() {
 
     // Project Type
     const [projectType, setProjectType] = useState(null);
+    const [projectTypeQuery, setProjectTypeQuery] = useState(null);
     const lineRef = useRef()
     const projectsRef = useRef([]);
 
@@ -143,9 +144,37 @@ export default function ProjectList() {
                 setProjectsCatchErr('Proje kategorileri yüklenirken bir hata oluştu, lütfen daha sonra tekrar deneyiniz (FETCHERR-02)')
             }
             if (data) {
+                var oldData = JSON.parse(JSON.stringify(data));
+
+                let trMap = {
+                    'çÇ':'c',
+                    'ğĞ':'g',
+                    'şŞ':'s',
+                    'üÜ':'u',
+                    'ıİ':'i',
+                    'öÖ':'o'
+                };
+            
+                for(var key in trMap) {
+                    let i = 0;
+                    if (data[i].projectType) {
+                        data[i].projectType = data[i].projectType.replace(new RegExp('['+key+']','g'), trMap[key])
+                        .replace(/[^-a-zA-Z0-9\s]+/ig, '')
+                        .replace(/\s/gi, "-")
+                        .replace(/[-]+/gi, "-")
+                        .toLowerCase();
+                    }
+                    i++;
+                }
+
+                console.log('projectType data:', oldData);
+                console.log('projectTypeQuery data:', data);
                 data.unshift({'projectType': 'tümü'});
-                console.log(data);
-                setProjectType(data)
+                oldData.unshift({'projectType': 'tümü'});
+                
+                setProjectType(oldData)
+                setProjectTypeQuery(data)
+
                 setProjectsCatchErr(null)
             }
         }
@@ -192,21 +221,41 @@ export default function ProjectList() {
     // Custom search
     var qsVals = [];
 
+    var trMap = {
+        'çÇ':'c',
+        'ğĞ':'g',
+        'şŞ':'s',
+        'üÜ':'u',
+        'ıİ':'i',
+        'öÖ':'o'
+    };
+
     const handleSearchInput = (val) => {
         console.log(val);
 
         if (val.length > 0) {
-            projectType.map((project, index) => {
+
+            // Replace Turkish chars with eng chars
+            for(var key in trMap) {
+                val = val.replace(new RegExp('['+key+']','g'), trMap[key])
+                .replace(/[^-a-zA-Z0-9\s]+/ig, '')
+                .replace(/\s/gi, "-")
+                .replace(/[-]+/gi, "-")
+                .toLowerCase();
+            }
+
+            console.log('query val:', val);
+
+            projectTypeQuery.map((project, index) => {
                 if (project?.projectType.includes(val)) {
-                    qsVals.push('.'+projectType[index].projectType);
+                    qsVals.push('.'+projectTypeQuery[index].projectType);
                 }
             });
 
-            console.log(qsVals);
-
             if (qsVals.length > 0) {
                 let qsQuery = qsVals.join(', ').substring(1);
-                console.log(qsQuery);
+ 
+                console.log('qsQuery: ', qsQuery);
         
                 setFilterKey(qsQuery)
             }else {
@@ -244,7 +293,7 @@ export default function ProjectList() {
                                 return (
                                     <div className="item-holder" style={{transitionDelay: '0.'+index+'s'}} key={index}>
                                         <div className={selectedFilter === index ? 'link-item active' : 'link-item'} 
-                                            onClick={() => handleFilterLink(type?.projectType, index)} 
+                                            onClick={() => handleFilterLink(projectTypeQuery[index].projectType, index)} 
                                             ref={(element) => (projectsRef.current[index] = element)}>
                                             {type?.projectType}
                                         </div>

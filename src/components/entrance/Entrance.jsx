@@ -1,11 +1,27 @@
 import './Entrance.css';
 
+export default function Entrance({...props}) {
 
-export default function Entrance() {
     return(
         <div className="entrance">
-            <h4>Tasarım. Deneyim. <br /><span>Kreasyon.</span> </h4>
-            <p><b>Arayüz</b> ve <b>Dijital Ürünler</b> tasarlıyor geliştiriyoruz.</p>
+            <h4>      
+                {props?.title?.split('*').map((part, index) => (
+                    index % 2 !== 0 ? (
+                    <><br /><span key={index}>{part}</span></>
+                    ) : (
+                    part
+                    )
+                ))}
+            </h4>
+            <p>
+                {props?.subTitle?.split('*').map((part, index) => (
+                    index % 2 !== 0 ? (
+                    <><b key={index}>{part}</b></>
+                    ) : (
+                    part
+                    )
+                ))}
+            </p>
         </div>
     )
 }
