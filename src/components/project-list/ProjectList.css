@@ -16,6 +16,7 @@
 .project-list > .top {
     border-bottom: 1px solid #07283D;
     position: relative;
+    overflow: hidden;
 }
 
 .project-list > .top .filter-active {
@@ -23,15 +24,25 @@
     justify-content: space-between;
 }
 
+.project-list > .top .filter-active .swiper{
+    width: 100%;
+}
+
+.project-list > .top .filter-active .swiper .swiper-slide {
+    width: max-content;
+}
+
 .project-list > .top .filter-active .filter-links {
     display: flex;
     align-items: center;
     cursor: pointer;
     overflow: hidden;
+    width: 70%;
 }
 
 .project-list > .top .filter-active .filter-links .item-holder {
     transition: .2s;
+    width: 100%;
 }
 
 .project-list > .top .filter-active.search .filter-links .item-holder {
@@ -52,10 +63,30 @@
     text-transform: uppercase;
     font-weight: normal;
     transition: .2s;
+    text-align: center;
+    justify-content: center;
+    /* width: 100%; */
 }
 
 .project-list > .top .filter-active .filter-links .link-item.active {
     color: #b8d4e7;
+}
+
+.project-list > .top .filter-active .filter-links .link-item:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0px;
+    height: 2px;
+    background: #2C53B5;
+    opacity: 0;
+    transition-delay: 0s;
+}
+
+.project-list > .top .filter-active .filter-links .link-item.active:before {
+    opacity: 1;
+    transition-delay: .3s;
 }
 
 .project-list > .top .filter-active .search-input {
@@ -139,10 +170,14 @@
 .project-list > .top .line {
     position: absolute;
     left: 0;
-    bottom: -1px;
+    bottom: 0px;
     height: 2px;
     width: 76px;
     background: #2C53B5;
+    opacity: 0;
+}
+
+.project-list > .top .line.moving {
     transition: .3s;
 }
 

@@ -4,14 +4,18 @@ import ProjectItem from '../project-item/ProjectItem'
 import supabase from '../../supabaseClient';
 import './ProjectList.css';
 import Isotope from "isotope-layout";
-import $ from 'jquery';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { FreeMode, Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import 'swiper/css/pagination';
 
 export default function ProjectList() {
 
     // Project Item
     const [projects, setProjects] = useState(null)
     const [projectsCatchErr, setProjectsCatchErr] = useState(null)
-
+    const [projectNameMemo, setProjectNameMemo] = useState(null);
 
     // Project Type
     const [projectType, setProjectType] = useState(null);
@@ -36,11 +40,30 @@ export default function ProjectList() {
         setFilterKey(key);
         setSelectedFilter(index);
 
-        let left = projectsRef.current[index].offsetLeft,
-            width = projectsRef.current[index].offsetWidth;
+        // For line animation
+        const wrapper = document.querySelector('.swiper-wrapper');
+        const wrapperStyle = window.getComputedStyle(wrapper);
+        const calcWrapper = wrapperStyle.transform.toString().split(", ")[4];
 
-        lineRef.current.style.left = left+'px';
-        lineRef.current.style.width = width+'px';
+        filterContainer.current.style.pointerEvents = 'none';
+        lineRef.current.style.opacity = 1;
+        setTimeout(() => {
+            lineRef.current.classList.add('moving');
+            let left = (parseInt(projectsRef.current[index].parentElement.parentElement.offsetLeft) + parseInt(calcWrapper)),
+                width = projectsRef.current[index].offsetWidth;
+    
+            console.log(left, width);
+    
+            lineRef.current.style.left = left+'px';
+            lineRef.current.style.width = width+'px';
+        }, 1);
+
+
+        setTimeout(() => {
+            lineRef.current.style.opacity = 0;
+            lineRef.current.classList.remove('moving');
+            filterContainer.current.style.pointerEvents = 'all';
+        }, 300);
 
     }
 
@@ -146,40 +169,101 @@ export default function ProjectList() {
             if (data) {
                 var oldData = JSON.parse(JSON.stringify(data));
 
-                let trMap = {
-                    'çÇ':'c',
-                    'ğĞ':'g',
-                    'şŞ':'s',
-                    'üÜ':'u',
-                    'ıİ':'i',
-                    'öÖ':'o'
+                var trMap = {
+                    'ç':'c',
+                    'Ç':'C',
+                    'ğ':'g',
+                    'Ğ':'G',
+                    'ş':'s',
+                    'Ş':'S',
+                    'ü':'u',
+                    'Ü':'U',
+                    'ı':'i',
+                    'İ':'I',
+                    'ö':'o',
+                    'Ö':'O'
                 };
-            
-                for(var key in trMap) {
-                    let i = 0;
-                    if (data[i].projectType) {
-                        data[i].projectType = data[i].projectType.replace(new RegExp('['+key+']','g'), trMap[key])
-                        .replace(/[^-a-zA-Z0-9\s]+/ig, '')
-                        .replace(/\s/gi, "-")
-                        .replace(/[-]+/gi, "-")
-                        .toLowerCase();
-                    }
-                    i++;
-                }
+                var datas = data;
 
+                datas = datas.map(item => {
+                    for (var key in trMap) {
+                        var regExp = new RegExp(key, 'g');
+                        item.projectType = item.projectType.replace(regExp, trMap[key]);
+                    }
+                
+                    return {
+                        ...item,
+                        projectType: item.projectType
+                            .replace(/[^-a-zA-Z0-9\s]+/ig, '')
+                            .replace(/\s/g, "-")
+                            .replace(/[-]+/g, "-")
+                            .toLowerCase()
+                    };
+                });
+        
                 console.log('projectType data:', oldData);
                 console.log('projectTypeQuery data:', data);
                 data.unshift({'projectType': 'tümü'});
                 oldData.unshift({'projectType': 'tümü'});
                 
                 setProjectType(oldData)
-                setProjectTypeQuery(data)
+                setProjectTypeQuery(datas)
 
                 setProjectsCatchErr(null)
             }
         }
 
         fetchProjectType();
+
+        const fetchProjectNames = async () => {
+            const {data, error} = await supabase
+                .from('project-list')
+                .select('projectName')
+
+            if (error) {
+                console.log(error);
+            }
+            if (data) {
+                var trMap = {
+                    'ç':'c',
+                    'Ç':'C',
+                    'ğ':'g',
+                    'Ğ':'G',
+                    'ş':'s',
+                    'Ş':'S',
+                    'ü':'u',
+                    'Ü':'U',
+                    'ı':'i',
+                    'İ':'I',
+                    'ö':'o',
+                    'Ö':'O'
+                };
+
+                var datas = data;
+
+                datas = datas.map(item => {
+                    for (var key in trMap) {
+                        var regExp = new RegExp(key, 'g');
+                        item.projectName = item.projectName.replace(regExp, trMap[key]);
+                    }
+                
+                    return {
+                        ...item,
+                        projectName: item.projectName
+                            .replace(/[^-a-zA-Z0-9\s]+/ig, '')
+                            .replace(/\s/g, "-")
+                            .replace(/[-]+/g, "-")
+                            .toLowerCase()
+                    };
+                });
+        
+                console.log('projectNameMemo', datas);
+                
+                setProjectNameMemo(datas)
+            }
+        }
+
+        fetchProjectNames();
     }, []);
 
     // Open Search
@@ -192,19 +276,17 @@ export default function ProjectList() {
     }
 
     useEffect(() => {
-        
         const checkSearchIsActive = (e) => {
-
-            if (filterContainer.current.classList.value.includes('search') && e && e.key === 'Escape') {
-                handleFilter();
+            if (e && e.key === 'Escape') {
+                if (filterContainer.current.classList.value.includes('search')) {
+                    handleFilter();
+                }
             }
-
         }
-
+        
         window.addEventListener('keydown', (e) => checkSearchIsActive(e))
-
         return () => {
-        window.removeEventListener('keydown', (e) => checkSearchIsActive(e))
+            window.removeEventListener('keydown', (e) => checkSearchIsActive(e))
         }
     }, [])
     
@@ -222,12 +304,18 @@ export default function ProjectList() {
     var qsVals = [];
 
     var trMap = {
-        'çÇ':'c',
-        'ğĞ':'g',
-        'şŞ':'s',
-        'üÜ':'u',
-        'ıİ':'i',
-        'öÖ':'o'
+        'ç':'c',
+        'Ç':'C',
+        'ğ':'g',
+        'Ğ':'G',
+        'ş':'s',
+        'Ş':'S',
+        'ü':'u',
+        'Ü':'U',
+        'ı':'i',
+        'İ':'I',
+        'ö':'o',
+        'Ö':'O'
     };
 
     const handleSearchInput = (val) => {
@@ -236,19 +324,27 @@ export default function ProjectList() {
         if (val.length > 0) {
 
             // Replace Turkish chars with eng chars
-            for(var key in trMap) {
-                val = val.replace(new RegExp('['+key+']','g'), trMap[key])
-                .replace(/[^-a-zA-Z0-9\s]+/ig, '')
-                .replace(/\s/gi, "-")
-                .replace(/[-]+/gi, "-")
-                .toLowerCase();
+            for (var key in trMap) {
+                var regExp = new RegExp(key, 'g');
+                val = val.replace(regExp, trMap[key]);
             }
+            
+            val = val.replace(/[^-a-zA-Z0-9\s]+/ig, '')
+            .replace(/\s/g, "-")
+            .replace(/[-]+/g, "-")
+            .toLowerCase();
 
             console.log('query val:', val);
 
             projectTypeQuery.map((project, index) => {
                 if (project?.projectType.includes(val)) {
                     qsVals.push('.'+projectTypeQuery[index].projectType);
+                }
+            });
+
+            projectNameMemo.map((project, index) => {
+                if (project?.projectName.includes(val)) {
+                    qsVals.push('.'+projectNameMemo[index].projectName);
                 }
             });
 
@@ -272,35 +368,46 @@ export default function ProjectList() {
             <div className="top">
                 <div className="filter-active" ref={filterContainer}>
                     <div className="filter-links">
-                        {projectType?.map((type, index) => {
-                            if (processedTypes.includes(type?.projectType)) {
-                                return null;
-                            }
+                    <Swiper
+                        slidesPerView={'auto'}
+                        spaceBetween={30}
+                        modules={[FreeMode, Pagination]}
+                        className="filter-link-swiper"
+                    >
+                            {projectType?.map((type, index) => {
+                                if (processedTypes.includes(type?.projectType)) {
+                                    return null;
+                                }
 
-                            processedTypes.push(type?.projectType);
-                            
-                            if (index === 0) {
-                                return (
-                                    <div className="item-holder" style={{transitionDelay: '0.'+index+'s'}} key={index}>
-                                        <div className={selectedFilter === index ? 'link-item active' : 'link-item'} 
-                                            onClick={() => handleFilterLink('*', index)} 
-                                            ref={(element) => (projectsRef.current[index] = element)}>
-                                            {type?.projectType}
-                                        </div>
-                                    </div>
-                                );
-                            }else {
-                                return (
-                                    <div className="item-holder" style={{transitionDelay: '0.'+index+'s'}} key={index}>
-                                        <div className={selectedFilter === index ? 'link-item active' : 'link-item'} 
-                                            onClick={() => handleFilterLink(projectTypeQuery[index].projectType, index)} 
-                                            ref={(element) => (projectsRef.current[index] = element)}>
-                                            {type?.projectType}
-                                        </div>
-                                    </div>
-                                );
-                            }
-                        })}
+                                processedTypes.push(type?.projectType);
+                                
+                                if (index === 0) {
+                                    return (
+                                        <SwiperSlide>
+                                            <div className="item-holder" style={{transitionDelay: '0.'+index+'s'}} key={index}>
+                                                <div className={selectedFilter === index ? 'link-item active' : 'link-item'} 
+                                                    onClick={() => handleFilterLink('*', index)} 
+                                                    ref={(element) => (projectsRef.current[index] = element)}>
+                                                    {type?.projectType}
+                                                </div>
+                                            </div>
+                                        </SwiperSlide>
+                                    );
+                                }else {
+                                    return (
+                                        <SwiperSlide>
+                                            <div className="item-holder" style={{transitionDelay: '0.'+index+'s'}} key={index}>
+                                                <div className={selectedFilter === index ? 'link-item active' : 'link-item'} 
+                                                    onClick={() => handleFilterLink(projectTypeQuery[index-1].projectType, index)} 
+                                                    ref={(element) => (projectsRef.current[index] = element)}>
+                                                    {type?.projectType}
+                                                </div>
+                                            </div>
+                                        </SwiperSlide>
+                                    );
+                                }
+                            })}
+                        </Swiper>
                     </div>
                     <div className="search-input">
                         <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="none" viewBox="0 0 23 23" > <path fill="#228ED7" d="M20.805 19.445l-2.712-2.703a9.123 9.123 0 10-1.35 1.351l2.702 2.712a.96.96 0 001.644-.68.96.96 0 00-.284-.68zM3.833 11.02a7.188 7.188 0 1114.375 0 7.188 7.188 0 01-14.375 0z" ></path> </svg>
