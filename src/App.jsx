@@ -5,6 +5,7 @@ import Footer from './components/footer/Footer';
 import Header from './components/header/Header';
 import ProjectList from './components/project-list/ProjectList';
 import supabase from './supabaseClient';
+import GoUp from './components/go-up/GoUp';
 
 function App() {
 
@@ -39,6 +40,7 @@ function App() {
                 subTitle={siteInfos && siteInfos[0]?.subTitle}
             />
             <ProjectList />
+            <GoUp />
             <Footer
                 tel={siteInfos && siteInfos[0]?.tel}
                 mail={siteInfos && siteInfos[0]?.mail}

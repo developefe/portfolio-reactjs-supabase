@@ -45,8 +45,8 @@ export default function ProjectList() {
         const wrapperStyle = window.getComputedStyle(wrapper);
         const calcWrapper = wrapperStyle.transform.toString().split(", ")[4];
 
-        filterContainer.current.style.pointerEvents = 'none';
-        lineRef.current.style.opacity = 1;
+        // filterContainer.current.style.pointerEvents = 'none';
+        // lineRef.current.style.opacity = 1;
         setTimeout(() => {
             lineRef.current.classList.add('moving');
             let left = (parseInt(projectsRef.current[index].parentElement.parentElement.offsetLeft) + parseInt(calcWrapper)),
@@ -60,9 +60,9 @@ export default function ProjectList() {
 
 
         setTimeout(() => {
-            lineRef.current.style.opacity = 0;
+            // lineRef.current.style.opacity = 0;
             lineRef.current.classList.remove('moving');
-            filterContainer.current.style.pointerEvents = 'all';
+            // filterContainer.current.style.pointerEvents = 'all';
         }, 300);
 
     }
@@ -370,7 +370,7 @@ export default function ProjectList() {
                     <div className="filter-links">
                     <Swiper
                         slidesPerView={'auto'}
-                        spaceBetween={30}
+                        spaceBetween={0}
                         modules={[FreeMode, Pagination]}
                         className="filter-link-swiper"
                     >
@@ -416,6 +416,9 @@ export default function ProjectList() {
                     <div className="search-button">
                         <svg onClick={() => handleSearch()} xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="none" viewBox="0 0 23 23" > <path fill="#228ED7" d="M20.805 19.445l-2.712-2.703a9.123 9.123 0 10-1.35 1.351l2.702 2.712a.96.96 0 001.644-.68.96.96 0 00-.284-.68zM3.833 11.02a7.188 7.188 0 1114.375 0 7.188 7.188 0 01-14.375 0z" ></path> </svg>
                         <span onClick={() => handleFilter()}>ESC</span>
+                        <span class="cross" onClick={() => handleFilter()}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" fill="none" viewBox="0 0 24 24" > <path stroke="#7993C7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 5L5 19M5 5l4.5 4.5M12 12l7 7" ></path> </svg>
+                        </span>
                     </div>
                 </div>
                 <span className="line" ref={lineRef}></span>

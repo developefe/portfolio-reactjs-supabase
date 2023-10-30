@@ -1,0 +1,55 @@
+.go-up {
+    position: fixed;
+    right: 30px;
+    bottom: 40px;
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(322deg, #021e2f 0%, #ffffff00 90%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: .3s;
+    transform: translateY(20px);
+    opacity: 0;
+    visibility: hidden;
+}
+
+.go-up.active {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+.go-up:hover {
+    transform: scale(.9);
+}
+.go-up:hover svg {
+    transform: translateY(-6px);
+}
+
+.go-up svg {
+    width: 20px;
+    height: 20px;
+    transition: .3s;
+}
+
+.go-up svg path {
+    fill: #d2ddfb;
+    stroke-width: 1px;
+}
+
+@media only screen and (max-width: 767px){
+    .go-up {
+        right: 20px;
+        bottom: 20px;
+        width: 60px;
+        height: 60px;
+    }
+    
+    .go-up svg {
+        width: 15px;
+        height: 15px;
+    }
+}

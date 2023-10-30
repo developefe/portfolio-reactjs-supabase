@@ -28,6 +28,18 @@
     width: 100%;
 }
 
+.project-list > .top .filter-active .swiper:before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: linear-gradient(270deg, #00111c 40%, #ffffff00 100%);
+    z-index: 2;
+    width: 120px;
+    pointer-events: none;
+}
+
 .project-list > .top .filter-active .swiper .swiper-slide {
     width: max-content;
 }
@@ -75,18 +87,23 @@
 .project-list > .top .filter-active .filter-links .link-item:before {
     content: "";
     position: absolute;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     right: 0;
-    bottom: 0px;
+    bottom: -3px;
     height: 2px;
     background: #2C53B5;
     opacity: 0;
     transition-delay: 0s;
+    transition: 0.3s;
+    width: 0%;
 }
 
 .project-list > .top .filter-active .filter-links .link-item.active:before {
     opacity: 1;
-    transition-delay: .3s;
+    transition-delay: 0.1s;
+    bottom: 0;
+    width: 100%;
 }
 
 .project-list > .top .filter-active .search-input {
@@ -148,6 +165,7 @@
     width: 100% !important;
     transition: .6s;
     left: 0 !important;
+    visibility: visible;
 }
 
 .project-list > .top .filter-active .search-button {
@@ -161,7 +179,9 @@
     overflow: hidden;
 }
 
-.project-list > .top .filter-active .search-button svg {
+.project-list > .top .filter-active .search-button span.cross {display: none;}
+
+.project-list > .top .filter-active .search-button > svg {
     position: absolute;
     top: 0;
     transition: .3s;
@@ -174,7 +194,9 @@
     height: 2px;
     width: 76px;
     background: #2C53B5;
-    opacity: 0;
+    visibility: hidden;
+    transition: .5s;
+    z-index: 1;
 }
 
 .project-list > .top .line.moving {
@@ -193,7 +215,7 @@
     transition: .3s;
 }
 
-.project-list > .top .filter-active.search .search-button svg {
+.project-list > .top .filter-active.search .search-button > svg {
     transform: translateY(60px);
 }
 
@@ -224,11 +246,71 @@
     }
     
     .project-list .list {
+        min-height: 600px;
+    }
+
+    .project-list > .top .filter-active .search-button span:nth-child(2) {
+        display: none;
+    }
+    
+    .project-list > .top .filter-active .search-button span.cross {
+        display: block;
+    }
+    
+    .project-list > .top .filter-active .search-button span.cross svg {
+        width: 30px;
+        height: 30px;
+        margin-top: -8px
+    }
+
+    .project-list > .top .filter-active .search-input input {
+        width: 430px;
+    }
+}
+
+@media only screen and (max-width: 900px){
+    .project-list .list {
         margin: 0;
+    }
+    .project-list > .top .filter-active .swiper:before {
+        width: 100px;
     }
 }
 
 @media only screen and (max-width: 767px){
+
+    .project-list {
+        padding: 0 0px 60px;
+    }
+
+    .project-list > .top .filter-active .filter-links {
+        width: 100%;
+        height: 50px;
+        align-items: end;
+    }
+
+    .project-list > .top .filter-active .search-button {
+        position: absolute;
+        right: 0;
+        z-index: 2;
+        bottom: -9px;
+        height: 60px;
+    }
+
+    .project-list > .top .filter-active .search-input {
+        height: 50px;
+    }
+
+    .project-list > .top .filter-active .search-button > svg {
+        top: 19px;
+    }
+
+    .project-list > .top .filter-active .search-button span.cross svg {
+        margin-top: 8px;
+        width: 25px;
+        height: 25px;
+    }
+
     .project-list > .top .filter-active .filter-links .link-item {
         padding: 0 10px 5px;
         font-size: 12px;
@@ -245,5 +327,9 @@
     
     .project-list > .top .filter-active .search-input input::placeholder {
         font-size: 12px;
+    }
+
+    .project-list > .top .filter-active .swiper:before {
+        width: 80px;
     }
 }

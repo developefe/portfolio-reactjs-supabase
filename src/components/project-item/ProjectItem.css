@@ -257,8 +257,14 @@
 }
 
 @media only screen and (max-width: 1200px){
+
+    
+
+}
+
+@media only screen and (max-width: 900px){
     .project-list .list .project-item .bottom .img {
-        height: 240px;
+        height: 380px;
     }
 
     .project-list .list .project-item {
@@ -274,6 +280,10 @@
     .project-list .list .project-item {
         padding: 0 20px 0;
     }
+
+    .project-list .list .project-item .top {
+        padding: 30px 15px 15px;
+    }
     
     .project-list .list .project-item .bottom {
         width: 80%;
@@ -281,7 +291,7 @@
     }
     
     .project-list .list .project-item .bottom .img {
-        height: 160px;
+        height: 165px;
     }
     
     .project-list .list .project-item .status {
