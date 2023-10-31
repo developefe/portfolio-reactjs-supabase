@@ -10,7 +10,7 @@
     position: absolute;
     top: 0;
     left: 50%;
-    transform: translate(-50%, -75%);
+    transform: translate(-50%, -150%);
     width: 1200px;
     height: 1200px;
     background: radial-gradient(#031C2C 0%, #011420 50%, #00111C 70%);
@@ -18,6 +18,13 @@
     /* filter: blur(20px); */
     z-index: -3;
     opacity: 1;
+    transition: 1s;
+    transition-delay: .6s;
+    will-change: transform;
+}
+
+.main.show .entrance:before {
+    transform: translate(-50%, -75%);
 }
 
 .entrance h4 {

@@ -9,6 +9,7 @@ import { FreeMode, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/pagination';
+import $ from 'jquery';
 
 export default function ProjectList() {
 
@@ -32,8 +33,33 @@ export default function ProjectList() {
     const [filterKey, setFilterKey] = useState('*')
     const [selectedFilter, setSelectedFilter] = useState(0)
 
-    // Keeping project type for preventing duplication
+    // Stashing project type for preventing duplication
     const processedTypes = [];
+
+    // For first animation
+    const [count, setCount] = useState(0);
+    const [keepCount, setKeepCount] = useState(true);
+
+    useEffect(() => {
+        if (keepCount === true) {
+            var interval = setInterval(() => {
+              setCount((prevCount) => prevCount + 1);
+            }, 1000);
+        }else {
+            clearInterval(interval);
+        }
+        return () => {
+          clearInterval(interval);
+        };
+    }, [keepCount]);
+    
+    useEffect(() => {
+      
+        console.log('interval:', count);
+        
+      
+    }, [count])
+    
 
     // Combining two functions into one
     const handleFilterLink = (key, index) => {
@@ -92,7 +118,7 @@ export default function ProjectList() {
 
     // Infinite scroll
     const [scrollOver, setScrollOver] = useState(false);
-    const [page, setPage] = useState(2);
+    const [page, setPage] = useState(20);
     const [projectCount, setProjectCount] = useState(null)
 
     const fetchProjectCount = async () => {
@@ -110,6 +136,22 @@ export default function ProjectList() {
         }
     }
 
+    const doAnimation = () => {
+        // For reaching a div in different component I decided to use jquery as a shortcut
+        console.log('keepCount2', keepCount);
+        console.log('count2', count);
+        $('.ani-bg').addClass('finish');
+        setTimeout(() => {
+            $('.ani-bg').addClass('disappear');
+            setTimeout(() => {
+                $('.main').addClass('show');
+                $('body').removeClass('overflow-hidden');   
+                setCount(-1)
+                setKeepCount(false)
+            }, 700);
+        }, 1200);
+    }
+
     const fetchProjects = async (from, to) => {
         const {data, error} = await supabase
             .from('project-list')
@@ -124,6 +166,21 @@ export default function ProjectList() {
         if (data) {
             setProjects(data);
             console.log(data);
+
+            console.log('keepCount', keepCount);
+            console.log('count', count);
+            if (keepCount == true) {
+                if (count && count > 3) {
+                    doAnimation();
+                }else if (count < 0) {
+                    return;
+                }else {
+                    setTimeout(() => {
+                        doAnimation()
+                    }, 2000);
+                }
+            }
+
             setProjectsCatchErr(null);
         }
     }
@@ -132,9 +189,9 @@ export default function ProjectList() {
         const handleScroll = () => {
             if (projectsRef?.current[0]?.classList.value.includes('active') && !filterContainer.current.classList.value.includes('search')) {
                 if (((window.scrollY + window.innerHeight) > (document.documentElement.offsetHeight  - 150)) && !scrollOver) {
-                    if ((projectCount.length - page) > -1) {
+                    if ((projectCount?.length - page) > -1) {
                         console.log('handle scroll çalıştı');
-                        setPage(page+2);            
+                        setPage(page+10);            
                         fetchProjects(0,page)
                         setScrollOver(true);
                     }
@@ -155,7 +212,7 @@ export default function ProjectList() {
     useEffect(() => {
 
         fetchProjectCount();
-        fetchProjects(0,1);
+        fetchProjects(0,10);
 
         const fetchProjectType = async () => {
             const {data, error} = await supabase

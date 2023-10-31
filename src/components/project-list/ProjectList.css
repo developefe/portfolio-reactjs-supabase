@@ -26,6 +26,7 @@
 
 .project-list > .top .filter-active .swiper{
     width: 100%;
+    padding-right: 100px;
 }
 
 .project-list > .top .filter-active .swiper:before {

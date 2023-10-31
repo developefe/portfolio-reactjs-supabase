@@ -6,6 +6,7 @@ import Header from './components/header/Header';
 import ProjectList from './components/project-list/ProjectList';
 import supabase from './supabaseClient';
 import GoUp from './components/go-up/GoUp';
+import EntranceAni from './components/entrance-ani/EntranceAni';
 
 function App() {
 
@@ -30,23 +31,26 @@ function App() {
     }, []);
 
     return (
-        <div className="main">
-            <Header 
-                tel={siteInfos && siteInfos[0]?.tel}
-                mail={siteInfos && siteInfos[0]?.mail}
-            />
-            <Entrance 
-                title={siteInfos && siteInfos[0]?.title}
-                subTitle={siteInfos && siteInfos[0]?.subTitle}
-            />
-            <ProjectList />
-            <GoUp />
-            <Footer
-                tel={siteInfos && siteInfos[0]?.tel}
-                mail={siteInfos && siteInfos[0]?.mail}
-                footerSlogan={siteInfos && siteInfos[0]?.footerSlogan}
-            />
-        </div>
+        <>
+            <EntranceAni />
+            <div className="main">
+                <Header 
+                    tel={siteInfos && siteInfos[0]?.tel}
+                    mail={siteInfos && siteInfos[0]?.mail}
+                />
+                <Entrance 
+                    title={siteInfos && siteInfos[0]?.title}
+                    subTitle={siteInfos && siteInfos[0]?.subTitle}
+                />
+                <ProjectList />
+                <GoUp />
+                <Footer
+                    tel={siteInfos && siteInfos[0]?.tel}
+                    mail={siteInfos && siteInfos[0]?.mail}
+                    footerSlogan={siteInfos && siteInfos[0]?.footerSlogan}
+                />
+            </div>    
+        </>
     );
 }
 
