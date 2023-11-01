@@ -54,10 +54,7 @@ export default function ProjectList() {
     }, [keepCount]);
     
     useEffect(() => {
-      
         console.log('interval:', count);
-        
-      
     }, [count])
     
 
@@ -421,73 +418,75 @@ export default function ProjectList() {
     }
     
     return(
-        <div className="project-list">
-            <div className="top">
-                <div className="filter-active" ref={filterContainer}>
-                    <div className="filter-links">
-                    <Swiper
-                        slidesPerView={'auto'}
-                        spaceBetween={0}
-                        modules={[FreeMode, Pagination]}
-                        className="filter-link-swiper"
-                    >
-                            {projectType?.map((type, index) => {
-                                if (processedTypes.includes(type?.projectType)) {
-                                    return null;
-                                }
+        <>   
+            <div className="project-list">
+                <div className="top">
+                    <div className="filter-active" ref={filterContainer}>
+                        <div className="filter-links">
+                        <Swiper
+                            slidesPerView={'auto'}
+                            spaceBetween={0}
+                            modules={[FreeMode, Pagination]}
+                            className="filter-link-swiper"
+                        >
+                                {projectType?.map((type, index) => {
+                                    if (processedTypes.includes(type?.projectType)) {
+                                        return null;
+                                    }
 
-                                processedTypes.push(type?.projectType);
-                                
-                                if (index === 0) {
-                                    return (
-                                        <SwiperSlide>
-                                            <div className="item-holder" style={{transitionDelay: '0.'+index+'s'}} key={index}>
-                                                <div className={selectedFilter === index ? 'link-item active' : 'link-item'} 
-                                                    onClick={() => handleFilterLink('*', index)} 
-                                                    ref={(element) => (projectsRef.current[index] = element)}>
-                                                    {type?.projectType}
+                                    processedTypes.push(type?.projectType);
+                                    
+                                    if (index === 0) {
+                                        return (
+                                            <SwiperSlide>
+                                                <div className="item-holder" style={{transitionDelay: '0.'+index+'s'}} key={index}>
+                                                    <div className={selectedFilter === index ? 'link-item active' : 'link-item'} 
+                                                        onClick={() => handleFilterLink('*', index)} 
+                                                        ref={(element) => (projectsRef.current[index] = element)}>
+                                                        {type?.projectType.toUpperCase().replace(/[I]+/g, 'İ')}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </SwiperSlide>
-                                    );
-                                }else {
-                                    return (
-                                        <SwiperSlide>
-                                            <div className="item-holder" style={{transitionDelay: '0.'+index+'s'}} key={index}>
-                                                <div className={selectedFilter === index ? 'link-item active' : 'link-item'} 
-                                                    onClick={() => handleFilterLink(projectTypeQuery[index-1].projectType, index)} 
-                                                    ref={(element) => (projectsRef.current[index] = element)}>
-                                                    {type?.projectType}
+                                            </SwiperSlide>
+                                        );
+                                    }else {
+                                        return (
+                                            <SwiperSlide>
+                                                <div className="item-holder" style={{transitionDelay: '0.'+index+'s'}} key={index}>
+                                                    <div className={selectedFilter === index ? 'link-item active' : 'link-item'} 
+                                                        onClick={() => handleFilterLink(projectTypeQuery[index-1].projectType, index)} 
+                                                        ref={(element) => (projectsRef.current[index] = element)}>
+                                                        {type?.projectType.toUpperCase().replace(/[I]+/g, 'İ')}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </SwiperSlide>
-                                    );
-                                }
-                            })}
-                        </Swiper>
+                                            </SwiperSlide>
+                                        );
+                                    }
+                                })}
+                            </Swiper>
+                        </div>
+                        <div className="search-input">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="none" viewBox="0 0 23 23" > <path fill="#228ED7" d="M20.805 19.445l-2.712-2.703a9.123 9.123 0 10-1.35 1.351l2.702 2.712a.96.96 0 001.644-.68.96.96 0 00-.284-.68zM3.833 11.02a7.188 7.188 0 1114.375 0 7.188 7.188 0 01-14.375 0z" ></path> </svg>
+                            <input type="text" onInput={() => handleSearchInput(searchInput.current.value)} ref={searchInput} placeholder='Proje ismiyle hızlı arama yapabilirsiniz...'/>
+                        </div>
+                        <div className="search-button">
+                            <svg onClick={() => handleSearch()} xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="none" viewBox="0 0 23 23" > <path fill="#228ED7" d="M20.805 19.445l-2.712-2.703a9.123 9.123 0 10-1.35 1.351l2.702 2.712a.96.96 0 001.644-.68.96.96 0 00-.284-.68zM3.833 11.02a7.188 7.188 0 1114.375 0 7.188 7.188 0 01-14.375 0z" ></path> </svg>
+                            <span onClick={() => handleFilter()}>ESC</span>
+                            <span class="cross" onClick={() => handleFilter()}>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" fill="none" viewBox="0 0 24 24" > <path stroke="#7993C7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 5L5 19M5 5l4.5 4.5M12 12l7 7" ></path> </svg>
+                            </span>
+                        </div>
                     </div>
-                    <div className="search-input">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="none" viewBox="0 0 23 23" > <path fill="#228ED7" d="M20.805 19.445l-2.712-2.703a9.123 9.123 0 10-1.35 1.351l2.702 2.712a.96.96 0 001.644-.68.96.96 0 00-.284-.68zM3.833 11.02a7.188 7.188 0 1114.375 0 7.188 7.188 0 01-14.375 0z" ></path> </svg>
-                        <input type="text" onInput={() => handleSearchInput(searchInput.current.value)} ref={searchInput} placeholder='Proje ismiyle hızlı arama yapabilirsiniz...'/>
-                    </div>
-                    <div className="search-button">
-                        <svg onClick={() => handleSearch()} xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="none" viewBox="0 0 23 23" > <path fill="#228ED7" d="M20.805 19.445l-2.712-2.703a9.123 9.123 0 10-1.35 1.351l2.702 2.712a.96.96 0 001.644-.68.96.96 0 00-.284-.68zM3.833 11.02a7.188 7.188 0 1114.375 0 7.188 7.188 0 01-14.375 0z" ></path> </svg>
-                        <span onClick={() => handleFilter()}>ESC</span>
-                        <span class="cross" onClick={() => handleFilter()}>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" fill="none" viewBox="0 0 24 24" > <path stroke="#7993C7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 5L5 19M5 5l4.5 4.5M12 12l7 7" ></path> </svg>
-                        </span>
-                    </div>
+                    <span className="line" ref={lineRef}></span>
                 </div>
-                <span className="line" ref={lineRef}></span>
+                <div className="list">
+                    {projects?.map(project => (
+                        <ProjectItem 
+                            key={project.id}
+                            project={project}
+                        />
+                    ))}
+                </div>
             </div>
-            <div className="list">
-                {projects?.map(project => (
-                    <ProjectItem 
-                        key={project.id}
-                        project={project}
-                    />
-                ))}
-            </div>
-        </div>
+        </>
     )
 }
