@@ -240,9 +240,15 @@
     border-radius: 6px 6px 0px 0px;
 }
 
-@media only screen and (max-width: 1441px){
+@media only screen and (max-width: 1680px){
     .project-list .list .project-item .bottom .img {
         height: 19vw;
+    }
+}
+
+@media only screen and (max-width: 1441px){
+    .project-list .list .project-item .bottom .img {
+        height: 18vw;
     }
 }
 
