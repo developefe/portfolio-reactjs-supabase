@@ -164,7 +164,7 @@
 }
 
 .project-list .list .project-item .top .links .link-item:hover svg path {
-    fill: #48ADEF;
+    stroke: #48ADEF;
 }
 
 .project-list .list .project-item .top .links .link-item:nth-child(2) .tooltip {
@@ -235,20 +235,20 @@
 
 .project-list .list .project-item .bottom .img {
     width: 100%;
-    height: 18vw;
+    height: 14vw;
     background: no-repeat center/cover;
     border-radius: 6px 6px 0px 0px;
 }
 
 @media only screen and (max-width: 1441px){
     .project-list .list .project-item .bottom .img {
-        height: 22vw;
+        height: 19vw;
     }
 }
 
 @media only screen and (max-width: 1366px){
     .project-list .list .project-item .bottom .img {
-        height: 24vw;
+        height: 21vw;
     }
 
     .project-list .list .project-item .status {
@@ -264,7 +264,7 @@
 
 @media only screen and (max-width: 900px){
     .project-list .list .project-item .bottom .img {
-        height: 380px;
+        height: 340px;
     }
 
     .project-list .list .project-item {
@@ -291,7 +291,7 @@
     }
     
     .project-list .list .project-item .bottom .img {
-        height: 165px;
+        height: 125px;
     }
     
     .project-list .list .project-item .status {

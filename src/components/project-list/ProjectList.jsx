@@ -54,7 +54,7 @@ export default function ProjectList() {
     }, [keepCount]);
     
     useEffect(() => {
-        console.log('interval:', count);
+        // console.log('interval:', count);
     }, [count])
     
 
@@ -75,7 +75,7 @@ export default function ProjectList() {
             let left = (parseInt(projectsRef.current[index].parentElement.parentElement.offsetLeft) + parseInt(calcWrapper)),
                 width = projectsRef.current[index].offsetWidth;
     
-            console.log(left, width);
+            // console.log(left, width);
     
             lineRef.current.style.left = left+'px';
             lineRef.current.style.width = width+'px';
@@ -98,7 +98,7 @@ export default function ProjectList() {
 
     // Create isotope
     useEffect(() => {
-        console.log('isotope');
+        // console.log('isotope');
         isotope.current = new Isotope('.list', {
             itemSelector: '.item-container',
             layoutMode: 'fitRows',
@@ -115,7 +115,7 @@ export default function ProjectList() {
 
     // Infinite scroll
     const [scrollOver, setScrollOver] = useState(false);
-    const [page, setPage] = useState(20);
+    const [page, setPage] = useState(5);
     const [projectCount, setProjectCount] = useState(null)
 
     const fetchProjectCount = async () => {
@@ -125,18 +125,18 @@ export default function ProjectList() {
 
         if (error) {
             setProjectCount('projeler çekilemedi')
-            console.log(error);
+            // console.log(error);
         }
         if (data) {
             setProjectCount(data);
-            console.log('proje id: ', data);
+            // console.log('proje id: ', data);
         }
     }
 
     const doAnimation = () => {
         // For reaching a div in different component I decided to use jquery as a shortcut
-        console.log('keepCount2', keepCount);
-        console.log('count2', count);
+        // console.log('keepCount2', keepCount);
+        // console.log('count2', count);
         $('.ani-bg').addClass('finish');
         setTimeout(() => {
             $('.ani-bg').addClass('disappear');
@@ -158,14 +158,14 @@ export default function ProjectList() {
         if (error) {
             setProjects(null)
             setProjectsCatchErr('Projeler yüklenirken bir hata oluştu, lütfen daha sonra tekrar deneyiniz (FETCHERR-01)')
-            console.log(error);
+            // console.log(error);
         }
         if (data) {
             setProjects(data);
-            console.log(data);
+            // console.log(data);
 
-            console.log('keepCount', keepCount);
-            console.log('count', count);
+            // console.log('keepCount', keepCount);
+            // console.log('count', count);
             if (keepCount == true) {
                 if (count && count > 3) {
                     doAnimation();
@@ -187,8 +187,8 @@ export default function ProjectList() {
             if (projectsRef?.current[0]?.classList.value.includes('active') && !filterContainer.current.classList.value.includes('search')) {
                 if (((window.scrollY + window.innerHeight) > (document.documentElement.offsetHeight  - 150)) && !scrollOver) {
                     if ((projectCount?.length - page) > -1) {
-                        console.log('handle scroll çalıştı');
-                        setPage(page+10);            
+                        // console.log('handle scroll çalıştı');
+                        setPage(page+2);            
                         fetchProjects(0,page)
                         setScrollOver(true);
                     }
@@ -209,7 +209,7 @@ export default function ProjectList() {
     useEffect(() => {
 
         fetchProjectCount();
-        fetchProjects(0,10);
+        fetchProjects(0,3);
 
         const fetchProjectType = async () => {
             const {data, error} = await supabase
@@ -217,7 +217,7 @@ export default function ProjectList() {
                 .select('projectType')
 
             if (error) {
-                console.log(error);
+                // console.log(error);
                 setProjectsCatchErr('Proje kategorileri yüklenirken bir hata oluştu, lütfen daha sonra tekrar deneyiniz (FETCHERR-02)')
             }
             if (data) {
@@ -255,8 +255,8 @@ export default function ProjectList() {
                     };
                 });
         
-                console.log('projectType data:', oldData);
-                console.log('projectTypeQuery data:', data);
+                // console.log('projectType data:', oldData);
+                // console.log('projectTypeQuery data:', data);
                 data.unshift({'projectType': 'tümü'});
                 oldData.unshift({'projectType': 'tümü'});
                 
@@ -275,7 +275,7 @@ export default function ProjectList() {
                 .select('projectName')
 
             if (error) {
-                console.log(error);
+                // console.log(error);
             }
             if (data) {
                 var trMap = {
@@ -311,7 +311,7 @@ export default function ProjectList() {
                     };
                 });
         
-                console.log('projectNameMemo', datas);
+                // console.log('projectNameMemo', datas);
                 
                 setProjectNameMemo(datas)
             }
@@ -373,7 +373,7 @@ export default function ProjectList() {
     };
 
     const handleSearchInput = (val) => {
-        console.log(val);
+        // console.log(val);
 
         if (val.length > 0) {
 
@@ -388,7 +388,7 @@ export default function ProjectList() {
             .replace(/[-]+/g, "-")
             .toLowerCase();
 
-            console.log('query val:', val);
+            // console.log('query val:', val);
 
             projectTypeQuery.map((project, index) => {
                 if (project?.projectType.includes(val)) {
@@ -405,7 +405,7 @@ export default function ProjectList() {
             if (qsVals.length > 0) {
                 let qsQuery = qsVals.join(', ').substring(1);
  
-                console.log('qsQuery: ', qsQuery);
+                // console.log('qsQuery: ', qsQuery);
         
                 setFilterKey(qsQuery)
             }else {
@@ -471,7 +471,7 @@ export default function ProjectList() {
                         <div className="search-button">
                             <svg onClick={() => handleSearch()} xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="none" viewBox="0 0 23 23" > <path fill="#228ED7" d="M20.805 19.445l-2.712-2.703a9.123 9.123 0 10-1.35 1.351l2.702 2.712a.96.96 0 001.644-.68.96.96 0 00-.284-.68zM3.833 11.02a7.188 7.188 0 1114.375 0 7.188 7.188 0 01-14.375 0z" ></path> </svg>
                             <span onClick={() => handleFilter()}>ESC</span>
-                            <span class="cross" onClick={() => handleFilter()}>
+                            <span className="cross" onClick={() => handleFilter()}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" fill="none" viewBox="0 0 24 24" > <path stroke="#7993C7" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 5L5 19M5 5l4.5 4.5M12 12l7 7" ></path> </svg>
                             </span>
                         </div>

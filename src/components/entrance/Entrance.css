@@ -40,9 +40,9 @@
 
 .entrance p {
     color: #4569AF;
-    font-size: 25px;
+    font-size: 20px;
     margin-left: auto;
-    width: 320px;
+    width: 490px;
     margin-top: 40px;
     font-weight: 400;
 }
@@ -82,7 +82,7 @@
     
     .entrance p {
         font-size: 14px;
-        width: 160px;
+        width: 210px;
         padding-right: 30px;
     }
     

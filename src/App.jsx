@@ -23,7 +23,7 @@ function App() {
             }
             if (data) {
                 setSiteInfos(data)
-                console.log('siteInfos:', data);
+                // console.log('siteInfos:', data);
             }
         }
 
