@@ -38,7 +38,7 @@
     align-items: center;
     border: 1px solid #21376F;
     border-radius: 50px;
-    max-width: 315px;
+    max-width: 245px;
     transform: scale(1.5);
     margin: 0 auto;
 }
@@ -141,7 +141,7 @@
 }
 
 .footer .social .right {
-    width: 230px;
+    width: 170px;
     height: 40px;
     display: flex;
     align-items: center;
