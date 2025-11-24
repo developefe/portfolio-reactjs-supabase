@@ -428,7 +428,6 @@ export default function ProjectList({ lang }) {
   return (
     <>
       <div className="project-list">
-        {lang}
         <div className="top">
           <div className="filter-active" ref={filterContainer}>
             <div className="filter-links">
