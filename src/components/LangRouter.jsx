@@ -1,30 +1,22 @@
-import { useEffect, useState } from 'react';
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import Home from './home/Home';
-import NotFound from './not-found/NotFound';
+import { Routes, Route, Navigate } from "react-router-dom";
+import Home from "./home/Home";
 
 function LangRouter() {
-    const location = useLocation();
-    const path = location.pathname;
 
-    const hasLangPrefix = path.startsWith("/tr") || path.startsWith("/en");
-    const pathCount = path.length == 3 ? true : false;
+  const lang = localStorage.getItem("lang") || "tr";
 
-    return (
-        <Routes>
-            <Route path="/tr" element={<Home lang="tr" />} />
-            <Route path="/en" element={<Home lang="en" />} />
-            
-            <Route path="*" element={<Navigate to={localStorage.getItem('lang')} replace />} />
+  return (
+    <Routes>
 
-            {/* <Route path="*" element={<NotFound />} /> */}
-        </Routes>
-    );
-}
+      {/* Dil ana path'leri */}
+      <Route path="/tr/*" element={<Home lang="tr" />} />
+      <Route path="/en/*" element={<Home lang="en" />} />
 
-export function getLangFromPath(pathname) {
-  if (pathname.startsWith("/en")) return "en";
-  return "tr";
+      {/* Hiçbiri eşleşmezse */}
+      <Route path="*" element={<Navigate to={`/${lang}`} replace />} />
+
+    </Routes>
+  );
 }
 
 export default LangRouter;
